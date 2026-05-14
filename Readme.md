@@ -1,6 +1,7 @@
 # WPF Monaco-Based Code Editor
 
-> **NOTE**: The WPF `CodeEditor` control is available as part of this example. It is not included in the DevExpress WPF UI distribution.
+> [!Note]
+> The WPF `CodeEditor` control is available as part of this example. It is not included in the DevExpress WPF UI distribution.
 
 This example wraps the open source [Monaco Editor (v0.55.1)](https://github.com/microsoft/monaco-editor). The editor is hosted inside Microsoft WebView2 and exposed through a reusable `CodeEditor` WPF control.
 
