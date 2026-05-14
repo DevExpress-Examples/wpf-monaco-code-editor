@@ -1,0 +1,219 @@
+﻿<dx:ThemedWindow
+    x:Class="CodeEditorExample.MainView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cem="clr-namespace:CodeEditor.Models;assembly=CodeEditor"
+    xmlns:cet="clr-namespace:CodeEditor.Theming;assembly=CodeEditor"
+    xmlns:ce="clr-namespace:CodeEditor;assembly=CodeEditor"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    Icon="{dx:DXImage 'SvgImages/XAF/Action_ShowScript.svg'}"
+    Title="WPF Code Editor Demo, DevExpress" Height="700" Width="1200">
+    <dxmvvm:Interaction.Behaviors>
+        <dxmvvm:OpenFileDialogService/>
+        <dxmvvm:SaveFileDialogService/>
+        <dx:DialogService x:Name="CustomLanguageService" DialogWindowStartupLocation="CenterOwner">
+            <dx:DialogService.DialogStyle>
+                <Style TargetType="dx:ThemedWindow">
+                    <Setter Property="Icon" Value="{dx:DXImage 'SvgImages/XAF/Action_ShowScript.svg'}"/> 
+                    <Setter Property="Width" Value="800" />
+                    <Setter Property="Height" Value="600" />
+                </Style>
+            </dx:DialogService.DialogStyle>
+        </dx:DialogService>
+    </dxmvvm:Interaction.Behaviors>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/> 
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <dxb:ToolBarControl BarItemDisplayMode="ContentAndGlyph" Grid.ColumnSpan="2" 
+                            AllowCustomizationMenu="False" AllowQuickCustomization="False">
+            <dxb:BarSubItem Content="Select Theme" 
+                            Glyph="{dx:DXImage 'SvgImages/DiagramIcons/brush.svg'}">
+                <dxmvvm:Interaction.Behaviors>
+                    <dxb:BarSubItemThemeSelectorBehavior/>
+                </dxmvvm:Interaction.Behaviors>
+            </dxb:BarSubItem>
+            <dxb:BarCheckItem Content="Apply Theme Colors" 
+                              IsChecked="{Binding ElementName=ThemeBehavior, Path=ApplyDevExpressColors}"
+                              Glyph="{dx:DXImage 'SvgImages/Dashboards/EditColors.svg'}"/>
+            <dxb:BarItemSeparator/>
+            <dxb:BarButtonItem Content="Open File" Command="{Binding OpenFileCommand}"
+                               Glyph="{dx:DXImage 'SvgImages/Outlook Inspired/Open.svg'}"/>
+            
+            <dxb:BarButtonItem Content="Save File" Command="{Binding SaveFileCommand}" 
+                               IsEnabled="{Binding ElementName=CodeEditor, Path=IsModified}"
+                               Glyph="{dx:DXImage 'SvgImages/Outlook Inspired/Save.svg'}"/>
+            <dxb:BarItemSeparator/>
+            <dxb:BarButtonItem Content="Register Custom Language"
+                               Command="{Binding RegisterCustomLanguageCommand}"
+                               Glyph="{dx:DXImage 'SvgImages/RichEdit/ShowAllFieldCodes.svg'}"/>
+            <dxb:BarButtonItem Content="Change Rules"
+                               Command="{Binding ChangeRulesCommand}"
+                               Glyph="{dx:DXImage 'SvgImages/Dashboards/EditQuery.svg'}"/>
+            <dxb:BarItemSeparator/>
+        </dxb:ToolBarControl>
+
+        <ce:CodeEditor Grid.Row="1" x:Name="CodeEditor" 
+                         EditorLanguage="{Binding Language}"
+                         Text="{Binding Text}">
+            <dxmvvm:Interaction.Behaviors>
+                <ce:CodeEditorService/>
+                <cet:ThemeBehavior x:Name="ThemeBehavior" Rules="{Binding Rules}"/>
+                <dxmvvm:EventToCommand EventName="EditorInitialized" Command="{Binding InitializeCommand}"/>
+            </dxmvvm:Interaction.Behaviors>
+        </ce:CodeEditor>
+
+        <dxdo:DockLayoutManager Grid.Row="1" 
+                                Grid.Column="1" 
+                                AllowCustomization="False" 
+                                Margin="5,0,0,0">
+            <dxdo:LayoutGroup>
+                <dxdo:LayoutPanel Caption="Options" 
+                                  AllowMove="False" 
+                                  AllowFloat="False" 
+                                  AllowContextMenu="False"
+                                  AllowHide="False"
+                                  MinWidth="300" VerticalContentAlignment="Top"
+                                  AllowClose="False">
+                    <dxdo:LayoutGroup Orientation="Vertical" >
+                        <dxdo:LayoutGroup.Resources>
+                            <Style x:Key="LayoutGroupStyle" TargetType="dxdo:LayoutGroup">
+                                <Setter Property="ShowCaption" Value="True"/>
+                                <Setter Property="Orientation" Value="Vertical"/>
+                                <Setter Property="GroupBorderStyle" Value="GroupBox"/>
+                                <Setter Property="AllowExpand" Value="False"/>
+                            </Style>
+                        </dxdo:LayoutGroup.Resources>
+                        <dxdo:LayoutGroup Caption="General" Style="{StaticResource LayoutGroupStyle}">
+                            <dxdo:LayoutControlItem Caption="Read Only" >
+                                <dxe:CheckEdit IsChecked="{Binding ElementName=CodeEditor, Path=ReadOnly}"/>
+                            </dxdo:LayoutControlItem>
+                            <dxdo:LayoutControlItem  Caption="Language" >
+                                <dxe:ComboBoxEdit ItemsSource="{Binding Languages}" 
+                                                  IncrementalFiltering="True" 
+                                                  ImmediatePopup="True"
+                                                  MinWidth="120"
+                                                  FilterCondition="Contains"
+                                                  EditValue="{Binding Language, UpdateSourceTrigger=PropertyChanged}">
+                                    <dxe:ComboBoxEdit.Buttons>
+                                        <dxe:ButtonInfo GlyphKind="Refresh" Command="{Binding RefreshLanguagesCommand}"/>
+                                    </dxe:ComboBoxEdit.Buttons>
+                                </dxe:ComboBoxEdit>
+                            </dxdo:LayoutControlItem>
+                        </dxdo:LayoutGroup>
+                        <dxdo:LayoutGroup Caption="Interaction" Style="{StaticResource LayoutGroupStyle}">
+                            <dxdo:LayoutControlItem Caption="Context Menu">
+                                <dxe:CheckEdit IsChecked="{Binding ElementName=CodeEditor, Path=EnableContextMenu}" />
+                            </dxdo:LayoutControlItem>
+                            <dxdo:LayoutControlItem Caption="Drag and Drop">
+                                <dxe:CheckEdit IsChecked="{Binding ElementName=CodeEditor, Path=EnableDragAndDrop}" />
+                            </dxdo:LayoutControlItem>
+                        </dxdo:LayoutGroup>
+
+
+                        <dxdo:LayoutGroup Caption="Appearance" Style="{StaticResource LayoutGroupStyle}">
+                            <dxdo:LayoutControlItem Caption="Line Numbers">
+                                <dxe:CheckEdit IsChecked="{Binding ElementName=CodeEditor, Path=ShowLineNumbers}"/>
+                            </dxdo:LayoutControlItem>
+                            <dxdo:LayoutControlItem Caption="Line Numbers Min Chars">
+                                <dxe:SpinEdit EditValue="{Binding ElementName=CodeEditor, Path=LineNumbersMinChars, UpdateSourceTrigger=PropertyChanged}" 
+                    MinValue="1" Mask="N0" EditValueType="{x:Type sys:Int32}"/>
+                            </dxdo:LayoutControlItem>
+                            <dxdo:LayoutControlItem Caption="Minimap">
+                                <dxe:CheckEdit IsChecked="{Binding ElementName=CodeEditor, Path=ShowMinimap}"/>
+                            </dxdo:LayoutControlItem>
+                            <dxdo:LayoutControlItem Caption="Glyph Margin">
+                                <dxe:CheckEdit IsChecked="{Binding ElementName=CodeEditor, Path=ShowGlyphMargin}"/>
+                            </dxdo:LayoutControlItem>
+                            <dxdo:LayoutControlItem Caption="Folding">
+                                <dxe:CheckEdit IsChecked="{Binding ElementName=CodeEditor, Path=EnableFolding}" />
+                            </dxdo:LayoutControlItem>
+                            <dxdo:LayoutControlItem Caption="Sticky Scroll">
+                                <dxe:CheckEdit IsChecked="{Binding ElementName=CodeEditor, Path=EnableStickyScroll}" />
+                            </dxdo:LayoutControlItem>
+                            <dxdo:LayoutControlItem Caption="Word Wrap">
+                                <dxe:ComboBoxEdit EditValue="{Binding ElementName=CodeEditor, Path=WordWrap, UpdateSourceTrigger=PropertyChanged}" 
+                          ItemsSource="{dxe:EnumItemsSource EnumType={x:Type cem:EditorWordWrap}}"/>
+                            </dxdo:LayoutControlItem>
+
+                            <dxdo:LayoutControlItem Caption="Smooth Scrolling">
+                                <dxe:CheckEdit IsChecked="{Binding ElementName=CodeEditor, Path=EnableSmoothScrolling}" />
+                            </dxdo:LayoutControlItem>
+                            <dxdo:LayoutControlItem Caption="Scroll Beyond Last Line">
+                                <dxe:CheckEdit IsChecked="{Binding ElementName=CodeEditor, Path=EnableScrollBeyondLastLine}" />
+                            </dxdo:LayoutControlItem>
+                            <dxdo:LayoutControlItem Caption="Scroll Beyond Last Column">
+                                <dxe:SpinEdit EditValue="{Binding ElementName=CodeEditor, Path=ScrollBeyondLastColumn, UpdateSourceTrigger=PropertyChanged}" 
+                      MinValue="0" Mask="N0" EditValueType="{x:Type sys:Int32}"/>
+                            </dxdo:LayoutControlItem>
+                            <dxdo:LayoutControlItem Caption="Mouse Wheel Zoom">
+                                <dxe:CheckEdit IsChecked="{Binding ElementName=CodeEditor, Path=EnableMouseWheelZoom}" />
+                            </dxdo:LayoutControlItem>
+                        </dxdo:LayoutGroup>
+
+                        <dxdo:LayoutGroup Caption="Editing" Style="{StaticResource LayoutGroupStyle}">
+                            <dxdo:LayoutControlItem Caption="Tab Size">
+                                <dxe:SpinEdit EditValue="{Binding ElementName=CodeEditor, Path=TabSize, UpdateSourceTrigger=PropertyChanged}" 
+                        MinValue="0" MaxValue="64" Mask="N0" EditValueType="{x:Type sys:Int32}"/>
+                            </dxdo:LayoutControlItem>
+                            <dxdo:LayoutControlItem Caption="Insert Spaces">
+                                <dxe:CheckEdit IsChecked="{Binding ElementName=CodeEditor, Path=InsertSpaces}" />
+                            </dxdo:LayoutControlItem>
+                            <dxdo:LayoutControlItem Caption="Detect Indentation">
+                                <dxe:CheckEdit IsChecked="{Binding ElementName=CodeEditor, Path=DetectIndentation}" />
+                            </dxdo:LayoutControlItem>
+                            <dxdo:LayoutControlItem Caption="Auto Indent">
+                                <dxe:ComboBoxEdit EditValue="{Binding ElementName=CodeEditor, Path=AutoIndent, UpdateSourceTrigger=PropertyChanged}" 
+                              ItemsSource="{dxe:EnumItemsSource EnumType={x:Type cem:EditorAutoIndent}}">
+                                    <dxe:ComboBoxEdit.Buttons>
+                                        <dxe:ImageButtonInfo Glyph="{dx:DXImage 'SvgImages/Icon Builder/Actions_Info.svg'}"
+                                     ToolTip="Changes take effect after editor configuration refresh (e.g. TabSize change)."/>
+                                    </dxe:ComboBoxEdit.Buttons>
+                                </dxe:ComboBoxEdit>
+                            </dxdo:LayoutControlItem>
+                        </dxdo:LayoutGroup>
+                        <dxdo:LayoutGroup Caption="IntelliSense" Style="{StaticResource LayoutGroupStyle}">
+                            <dxdo:LayoutControlItem Caption="Quick Suggestions">
+                                <dxe:CheckEdit IsChecked="{Binding ElementName=CodeEditor, Path=EnableQuickSuggestions}" />
+                            </dxdo:LayoutControlItem>
+                            <dxdo:LayoutControlItem Caption="Word Based Suggestions">
+                                <dxe:CheckEdit IsChecked="{Binding ElementName=CodeEditor, Path=EnableWordBasedSuggestions}" />
+                            </dxdo:LayoutControlItem>
+                            <dxdo:LayoutControlItem Caption="Suggest On Trigger Characters">
+                                <dxe:CheckEdit IsChecked="{Binding ElementName=CodeEditor, Path=EnableSuggestOnTriggerCharacters}" />
+                            </dxdo:LayoutControlItem>
+                            <dxdo:LayoutControlItem Caption="Enable Parameter Hints">
+                                <dxe:CheckEdit IsChecked="{Binding ElementName=CodeEditor, Path=EnableParameterHints}" />
+                            </dxdo:LayoutControlItem>
+                        </dxdo:LayoutGroup>
+
+                    </dxdo:LayoutGroup>
+                </dxdo:LayoutPanel>
+            </dxdo:LayoutGroup>
+        </dxdo:DockLayoutManager>
+
+
+
+        <dxb:StatusBarControl Grid.Row="2" Grid.ColumnSpan="2">
+            <dxb:BarStaticItem Content="{Binding ElementName=CodeEditor, Path=IsModified}" Alignment="Far">
+                <dxb:BarStaticItem.ContentTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Path=., StringFormat='{}Has Changes: {0}'}"/>
+                    </DataTemplate>
+                </dxb:BarStaticItem.ContentTemplate>
+            </dxb:BarStaticItem>
+        </dxb:StatusBarControl>
+
+    </Grid>
+</dx:ThemedWindow>

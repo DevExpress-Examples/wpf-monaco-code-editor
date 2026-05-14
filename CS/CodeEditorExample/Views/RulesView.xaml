@@ -1,0 +1,101 @@
+﻿<UserControl x:Class="CodeEditorExample.RulesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:cet="clr-namespace:CodeEditor.Theming;assembly=CodeEditor"
+             xmlns:ce="clr-namespace:CodeEditor;assembly=CodeEditor"
+             xmlns:common="clr-namespace:CodeEditorExample.Common"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <sys:String x:Key="filterString">
+            [Name] != 'None'
+        </sys:String>
+    </UserControl.Resources>
+    <dxmvvm:Interaction.Behaviors>
+        <dx:DXMessageBoxService/>
+        <dxmvvm:EventToCommand EventName="Loaded" Command="{Binding InitializedCommand}"/>
+    </dxmvvm:Interaction.Behaviors>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <dxe:CheckEdit Content="Edit Raw JS"  IsChecked="{Binding IsRawRulesMode, Mode=TwoWay}" 
+                       VerticalAlignment="Center" >
+            <dxmvvm:Interaction.Behaviors>
+                <dxmvvm:EventToCommand EventName="Checked" Command="{Binding ApplyRulesCommand}"/>
+                <dxmvvm:EventToCommand EventName="Unchecked"  Command="{Binding ApplyJSCommand}"/>
+            </dxmvvm:Interaction.Behaviors>
+        </dxe:CheckEdit>
+
+        <dxg:GridControl ItemsSource="{Binding Rules}" Grid.Row="1"
+                     Visibility="{Binding Path=IsRawRulesMode, Converter={dxmvvm:BooleanToVisibilityConverter Inverse=True}}"
+                 x:Name="grid"
+                 AutoGenerateColumns="None" 
+                 EnableSmartColumnsGeneration="True">
+            <dxg:GridColumn FieldName="Delete" Header=""
+                            ShowInColumnChooser="False" Fixed="Left" 
+                            AllowSorting="False"
+                            AllowGrouping="False" Width="50"
+                            AllowColumnFiltering="False"
+                            AllowResizing="False"
+                            AllowEditing="False"
+                            EditorButtonShowMode="ShowAlways"
+                            AllowMoving="False">
+                <dxg:GridColumn.CellDisplayTemplate>
+                    <DataTemplate>
+                        <dx:SimpleButton Command="{DXCommand Execute='View.DeleteRow(RowData.RowHandle.Value);'}"
+                                         Width="16" Height="16" ToolTip="Delete Rule"
+                                         Glyph="{dx:DXImage 'SvgImages/Icon Builder/Actions_Trash.svg'}"/>
+                    </DataTemplate>
+                </dxg:GridColumn.CellDisplayTemplate>
+            </dxg:GridColumn>
+            <dxg:GridColumn FieldName="Token"/>
+            <dxg:GridColumn FieldName="Foreground">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:PopupColorEditSettings AllowNullInput="True" NullValueButtonPlacement="EditBox"/>
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn FieldName="Background" Visible="False">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:PopupColorEditSettings AllowNullInput="True" NullValueButtonPlacement="EditBox"/>
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn Header="Font Style" Binding="{Binding Path=FontStyle, Converter={common:FontStyleToListConverter}, Mode=TwoWay}">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:ComboBoxEditSettings ItemsSource="{dxe:EnumItemsSource EnumType={x:Type cet:MonacoFontStyle}}"
+                                              FilterCriteria="{common:CriteriaOperator FilterString={StaticResource filterString}}"
+                                              AllowNullInput="True">
+                        <dxe:ComboBoxEditSettings.StyleSettings>
+                            <dxe:CheckedComboBoxStyleSettings/>
+                        </dxe:ComboBoxEditSettings.StyleSettings>
+                    </dxe:ComboBoxEditSettings>
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridControl.View>
+                <dxg:TableView NewItemRowPosition="Top"
+                           EnableImmediatePosting="True"
+                           AllowCommitOnValidationAttributeError="False"
+                           AllowLeaveInvalidEditor="False"
+                           AddingNewRowCommand="{Binding AddingNewRuleCommand}"
+                           ShowGroupPanel="False"/>
+            </dxg:GridControl.View>
+        </dxg:GridControl>
+
+        <ce:CodeEditor Text="{Binding RawRulesText}" EditorLanguage="javascript"
+                     Grid.Row="1" ShowLineNumbers="False" ShowGlyphMargin="False"
+                     Visibility="{Binding Path=IsRawRulesMode, Converter={dxmvvm:BooleanToVisibilityConverter}}">
+            <dxmvvm:Interaction.Behaviors>
+                <cet:ThemeBehavior />
+            </dxmvvm:Interaction.Behaviors>
+        </ce:CodeEditor>
+    </Grid>
+</UserControl>

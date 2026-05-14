@@ -1,0 +1,4 @@
+﻿<Solution>
+  <Project Path="CodeEditor/CodeEditor.csproj" />
+  <Project Path="CodeEditorExample/CodeEditorExample.csproj" />
+</Solution>

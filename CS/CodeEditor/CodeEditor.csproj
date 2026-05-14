@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <TargetFramework>net10.0-windows</TargetFramework>
+        <UseWPF>true</UseWPF>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>disable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="DevExpress.Wpf" Version="26.1.*-*" />
+        <PackageReference Include="DevExpress.Wpf.ThemesLW" Version="26.1.*-*" />
+        <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3719.77" />
+    </ItemGroup>
+
+	<ItemGroup>
+		<Content Include="Monaco\**\*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+</Project>

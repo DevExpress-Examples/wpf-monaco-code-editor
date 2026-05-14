@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net10.0-windows</TargetFramework>
+        <UseWPF>true</UseWPF>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>disable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="DevExpress.Wpf" Version="26.1.*-*" />
+        <PackageReference Include="DevExpress.Wpf.ThemesLW" Version="26.1.*-*" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\CodeEditor\CodeEditor.csproj" />
+    </ItemGroup>
+
+</Project>
