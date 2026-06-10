@@ -322,6 +322,19 @@ The editor tracks unsaved changes. `IsModified` is a read-only dependency proper
                    Command="{Binding SaveFileCommand}"
                    IsEnabled="{Binding ElementName=CodeEditor, Path=IsModified}"/>
 ```
+
+## Help Topics
+
+- [Overview](CS/CodeEditor/Docs/Overview.md)
+- [CodeEditor API Reference](CS/CodeEditor/Docs/CodeEditor.md)
+- [CodeEditorService API Reference](CS/CodeEditor/Docs/CodeEditorService.md)
+- [ThemeBehavior API Reference](CS/CodeEditor/Docs/ThemeBehavior.md)
+
+### Monaco Resources
+
+- [Monaco Editor](https://microsoft.github.io/monaco-editor/)
+- [Monarch Documentation](https://microsoft.github.io/monaco-editor/monarch.html)
+- [Monaco Playground – Custom Languages Example](https://microsoft.github.io/monaco-editor/playground.html?source=v0.55.1#example-extending-language-services-custom-languages)
 <!-- feedback -->
 ## Does This Example Address Your Development Requirements/Objectives?
 
