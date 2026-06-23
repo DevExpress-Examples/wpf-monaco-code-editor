@@ -120,6 +120,12 @@ By default, `CodeEditor` does not automatically track DevExpress theme changes.
 To synchronize Monaco with the active DevExpress theme, attach `ThemeBehavior`:
 
 ```xml
+xmlns:ce="clr-namespace:CodeEditor;assembly=CodeEditor"
+xmlns:cet="clr-namespace:CodeEditor.Theming;assembly=CodeEditor"
+xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+
+...
+
 <ce:CodeEditor
     Text="{Binding Code}"
     EditorLanguage="csharp">
@@ -129,14 +135,6 @@ To synchronize Monaco with the active DevExpress theme, attach `ThemeBehavior`:
     </dxmvvm:Interaction.Behaviors>
 
 </ce:CodeEditor>
-```
-
-> **Note:** Declare the namespace prefixes used above on the root element of your view (as in the Quick Start):
-
-```xml
-xmlns:ce="clr-namespace:CodeEditor;assembly=CodeEditor"
-xmlns:cet="clr-namespace:CodeEditor.Theming;assembly=CodeEditor"
-xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
 ```
 
 `ThemeBehavior`:
