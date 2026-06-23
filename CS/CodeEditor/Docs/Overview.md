@@ -2,11 +2,11 @@
 
 `CodeEditor` is a WPF control that embeds the [Monaco Editor](https://microsoft.github.io/monaco-editor/) (the editor engine used by Visual Studio Code) using [Microsoft WebView2](https://learn.microsoft.com/en-us/microsoft-edge/webview2/).
 
-It includes modern code editing capabilities — syntax highlighting, folding, minimap, theming, and custom languages — within WPF applications.
+The editor includes modern code editing capabilities — syntax highlighting, folding, minimap, theming, and custom languages — within WPF applications.
 
 The primary editing surface is the `CodeEditor` control, which exposes a focused, WPF-friendly API.
 
-The library also provides:
+The library also includes:
 
 - `ThemeBehavior` - integrates Monaco with DevExpress themes.
 - `CodeEditorService` - a lightweight service for cases where direct interaction with the control is not sufficient.
@@ -37,8 +37,6 @@ Add the `CodeEditor` project to your solution and reference it from your WPF app
 - Add project reference from your WPF app
 - Ensure DevExpress WPF and WebView2 dependencies are resolved
 
----
-
 ### 2. Declare the XML namespace
 
 ```xml
@@ -58,9 +56,7 @@ Add the `CodeEditor` project to your solution and reference it from your WPF app
 </Window>
 ```
 
----
-
-### 3. Provide a ViewModel
+### 3. Create a ViewModel
 
 ```csharp
 using DevExpress.Mvvm;
@@ -97,8 +93,6 @@ The editor content is automatically synchronized with the bound property.
 
 `CodeEditor` supports built-in Monaco themes, DevExpress theme integration, and custom theme registration.
 
----
-
 ### Built-in Monaco Themes
 
 You can use any of the standard Monaco themes:
@@ -110,8 +104,6 @@ editor.ThemeName = "hc-black";
 ```
 
 These themes are provided by Monaco.
-
----
 
 ### DevExpress Theme Integration
 
@@ -146,8 +138,6 @@ xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
 
 The theme is updated automatically when the DevExpress theme changes.
 
----
-
 ### Custom Themes
 
 You can register a custom Monaco theme programmatically:
@@ -174,7 +164,7 @@ For a complete list of commonly used Monaco theme color keys, see the official V
 
 In addition to UI colors, Monaco themes support token-level styling via `Rules`.
 
-Rules define how specific token types (such as `keyword`, `comment`, `string`, etc.) are rendered.
+Rules define how specific token types (such as `keyword`, `comment`, `string`, and other) are rendered.
 
 You can use `Rules` to override the appearance of existing token types or to define styling for custom tokens introduced by a custom language definition.
 
@@ -203,17 +193,15 @@ var theme = new MonacoTheme
 
 `Rules` is an init-only property and must be provided during theme initialization.
 
-When using `ThemeBehavior`, token styling can also be supplied via its `Rules` property, allowing rule customization alongside DevExpress theme integration.
+If you use `ThemeBehavior`, token styling can also be supplied through its `Rules` property, and it allows rule customization alongside DevExpress theme integration.
 
 ## Languages
 
 `CodeEditor` supports both built-in Monaco languages and custom language registration.
 
----
-
 ### Built-in Languages
 
-To use a built-in Monaco language, set the `EditorLanguage` property:
+To use a built-in Monaco language, specify the `EditorLanguage` property:
 
 ```csharp
 editor.EditorLanguage = "csharp";
@@ -221,13 +209,11 @@ editor.EditorLanguage = "javascript";
 editor.EditorLanguage = "json";
 ```
 
-The value must match a language id supported by Monaco.
-
----
+The value must match a language ID supported in Monaco Editor.
 
 ### Custom Languages
 
-Custom languages are registered using `LanguageDescriptor`.
+You can register custom languages using `LanguageDescriptor`:
 
 ```csharp
 var language = new LanguageDescriptor
@@ -261,15 +247,13 @@ editor.RegisterLanguage(language);
 editor.EditorLanguage = "mylang";
 ```
 
----
-
 ### Monarch Definition
 
 The `Monarch` property defines the syntax highlighting rules.
 
-It must contain a valid Monaco Monarch tokenizer definition provided as a JavaScript object literal.
+The property must contain a valid Monaco Monarch tokenizer definition specified as a JavaScript object literal.
 
-All standard Monarch features are supported, including:
+All standard Monarch features are supported:
 
 - Multiple states
 - Nested states
@@ -278,8 +262,6 @@ All standard Monarch features are supported, including:
 - Includes and state transitions
 
 Refer to the following topic for additional information: [Monarch Documentation](https://microsoft.github.io/monaco-editor/monarch.html)
-
----
 
 ### Language Configuration
 
