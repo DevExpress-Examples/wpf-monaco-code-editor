@@ -1,17 +1,17 @@
 ## Introduction
 
-This DevExpress WPF example can display code using a specially-designed `CodeEditor` control. This control is a wrapper around the [Monaco Editor](https://microsoft.github.io/monaco-editor/) used by Visual Studio Code. This advanced editor supports numerous modern code editing capabilities such as syntax highlighting, region folding, minimap, theming, and custom language support. Since **Monaco Editor** is a web control, our WPF wrapper uses [Microsoft WebView2](https://learn.microsoft.com/en-us/microsoft-edge/webview2/) to display it.
+This DevExpress WPF example displays code in a custom `CodeEditor` control. The control wraps the [Monaco Editor](https://microsoft.github.io/monaco-editor/), the editor used in Visual Studio Code. Monaco Editor supports modern code editing features such as syntax highlighting, region folding, a minimap, theming, and custom language support. Since **Monaco Editor** is a web control, the WPF wrapper uses [Microsoft WebView2](https://learn.microsoft.com/en-us/microsoft-edge/webview2/) to display it.
 
 
 
 
 
-Our `CodeEditor` control implementation uses the following helper classes:
+The `CodeEditor` implementation uses the following helper classes:
 
 - `ThemeBehavior` - integrates Monaco with DevExpress themes.
-- `CodeEditorService` - a lightweight service for cases where direct interaction with the control is not sufficient.
+- `CodeEditorService` - a lightweight service for scenarios where direct interaction with the control is not sufficient.
 
-The control is designed as a **state-driven wrapper**: WPF owns the editor state through dependency properties, and Monaco reflects that state while propagating changes back to WPF in an MVVM-friendly way.
+The control is designed as a **state-driven wrapper**: WPF owns the editor state through dependency properties, and Monaco Editor reflects that state and propagates changes back to WPF in an MVVM-friendly way.
 
 
 ## Prerequisites
@@ -205,7 +205,7 @@ editor.EditorLanguage = "javascript";
 editor.EditorLanguage = "json";
 ```
 
-The value must match a language ID supported in Monaco Editor.
+The value must match a language ID supported by Monaco Editor.
 
 ### Custom Languages
 
