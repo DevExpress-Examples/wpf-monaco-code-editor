@@ -1,29 +1,25 @@
 ## Introduction
 
-`CodeEditor` is a WPF control that embeds the [Monaco Editor](https://microsoft.github.io/monaco-editor/) (the editor engine used by Visual Studio Code) using [Microsoft WebView2](https://learn.microsoft.com/en-us/microsoft-edge/webview2/).
+This DevExpress WPF example can display code using a specially-designed `CodeEditor` control. This control is a wrapper around the [Monaco Editor](https://microsoft.github.io/monaco-editor/) used by Visual Studio Code. This advanced editor supports numerous modern code editing capabilities such as syntax highlighting, region folding, minimap, theming, and custom language support. Since **Monaco Editor** is a web control, our WPF wrapper uses [Microsoft WebView2](https://learn.microsoft.com/en-us/microsoft-edge/webview2/) to display it.
 
-The editor includes modern code editing capabilities — syntax highlighting, folding, minimap, theming, and custom languages — within WPF applications.
 
-The primary editing surface is the `CodeEditor` control, which exposes a focused, WPF-friendly API.
 
-The library also includes:
+
+
+Our `CodeEditor` control implementation uses the following helper classes:
 
 - `ThemeBehavior` - integrates Monaco with DevExpress themes.
 - `CodeEditorService` - a lightweight service for cases where direct interaction with the control is not sufficient.
 
 The control is designed as a **state-driven wrapper**: WPF owns the editor state through dependency properties, and Monaco reflects that state while propagating changes back to WPF in an MVVM-friendly way.
 
-> **Supported Monaco version:** 0.55.1  
-> The control is built and validated against this specific release.
 
 ## Prerequisites
 
+- DevExpress WPF v26.1 (or newer compatible version)
+- Monaco Editor v0.55.1 (the control is built and validated against this specific release)
+- .NET version compatible with DevExpress WPF version you use: [WPF Controls → Prerequisites → .NET / .NET Core](https://docs.devexpress.com/WPF/8091/prerequisites#netnet-core)
 - Windows with [Microsoft Edge WebView2 Runtime](https://learn.microsoft.com/en-us/microsoft-edge/webview2/concepts/distribution)
-- DevExpress WPF **26.1** (or newer compatible version)
-
-The required .NET version depends on the DevExpress WPF version in use.  
-See DevExpress documentation:  
-[WPF Controls → Prerequisites → .NET / .NET Core](https://docs.devexpress.com/WPF/8091/prerequisites#netnet-core)
 
 > The `CodeEditor` project must be compiled against the same DevExpress WPF version that is used in the consuming application.
 
@@ -95,7 +91,7 @@ The editor content is automatically synchronized with the bound property.
 
 ### Built-in Monaco Themes
 
-You can use any of the standard Monaco themes:
+You can use standard Monaco themes:
 
 ```csharp
 editor.ThemeName = "vs";
@@ -103,13 +99,13 @@ editor.ThemeName = "vs-dark";
 editor.ThemeName = "hc-black";
 ```
 
-These themes are provided by Monaco.
+
 
 ### DevExpress Theme Integration
 
-By default, `CodeEditor` does not automatically track DevExpress theme changes.
 
-To synchronize Monaco with the active DevExpress theme, attach `ThemeBehavior`:
+
+To synchronize a Monaco Editor with the active DevExpress theme, attach a `ThemeBehavior`:
 
 ```xml
 xmlns:ce="clr-namespace:CodeEditor;assembly=CodeEditor"
@@ -129,14 +125,14 @@ xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
 </ce:CodeEditor>
 ```
 
-`ThemeBehavior`:
+`ThemeBehavior` synchronizes DevExpress themes and Monaco Editor appearance in the following manner:
 
-- Detects the current DevExpress theme
+- Detects the current DevExpress theme at startup and each time the theme changes
 - Resolves Light / Dark / High Contrast base
 - Registers and applies a corresponding Monaco theme
 - Optionally maps DevExpress palette colors to Monaco color keys via the `ApplyDevExpressColors` property
 
-The theme is updated automatically when the DevExpress theme changes.
+
 
 ### Custom Themes
 
@@ -164,7 +160,7 @@ For a complete list of commonly used Monaco theme color keys, see the official V
 
 In addition to UI colors, Monaco themes support token-level styling via `Rules`.
 
-Rules define how specific token types (such as `keyword`, `comment`, `string`, and other) are rendered.
+Rules define how the editor renders specific token types such as `keyword`, `comment`, `string`, and others.
 
 You can use `Rules` to override the appearance of existing token types or to define styling for custom tokens introduced by a custom language definition.
 
@@ -249,7 +245,7 @@ editor.EditorLanguage = "mylang";
 
 ### Monarch Definition
 
-The `Monarch` property defines the syntax highlighting rules.
+The `Monarch` property defines syntax highlighting rules.
 
 The property must contain a valid Monaco Monarch tokenizer definition specified as a JavaScript object literal.
 
@@ -261,11 +257,11 @@ All standard Monarch features are supported:
 - Rule objects
 - Includes and state transitions
 
-Refer to the following topic for additional information: [Monarch Documentation](https://microsoft.github.io/monaco-editor/monarch.html)
+Refer to the following help topic for additional information: [Monarch Documentation](https://microsoft.github.io/monaco-editor/monarch.html)
 
 ### Language Configuration
 
-The optional `Configuration` property defines editor behavior such as:
+The optional `Configuration` property defines editor behavior attributes such as:
 
 - Line and block comments
 - Brackets
@@ -274,8 +270,7 @@ The optional `Configuration` property defines editor behavior such as:
 
 The configuration must also be provided as a JavaScript object literal.
 
-For language configuration details (brackets, comments, auto-closing pairs, etc.),  
-refer to the following topic: [Language Configuration Guide](https://code.visualstudio.com/api/language-extensions/language-configuration-guide)
+For additional information, refer to the following help topic: [Language Configuration Guide](https://code.visualstudio.com/api/language-extensions/language-configuration-guide)
 
 ## See also
 

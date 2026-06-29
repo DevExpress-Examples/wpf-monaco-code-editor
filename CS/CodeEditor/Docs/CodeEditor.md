@@ -1,12 +1,12 @@
 # CodeEditor
 
-WPF control that embeds Monaco Editor (VS Code editor) using WebView2 for code editing with syntax highlighting.
+WPF code editor control with syntax highlighting and other modern code display/navigation capabilities. This control embeds Monaco Editor (Visual Studio Code editor) using WebView2.
 
 ## Properties
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| `Text` | `string` | Gets or sets editor text. This is a dependency property. Supports two-way binding. |
+| `Text` | `string` | Gets or sets the editor text. This is a dependency property. Supports two-way binding. |
 | `EditorLanguage` | `string` | Gets or sets the programming language for syntax highlighting. This is a dependency property. Default: `"csharp"` |
 | `ReadOnly` | `bool` | Gets or sets whether the editor is read-only. This is a dependency property. Default: `false` |
 | `IsModified` | `bool` | Gets whether the content has been modified since the last save. This is a readonly dependency property. |
@@ -39,7 +39,7 @@ WPF control that embeds Monaco Editor (VS Code editor) using WebView2 for code e
 | Name | Description |
 | ---- | ----------- |
 | `GetAvailableLanguagesAsync(CancellationToken)` | Asynchronously retrieves a list of available programming language IDs. |
-| `RegisterLanguage(LanguageDescriptor)` | Registers a custom programming language with Monarch tokenizer. |
+| `RegisterLanguage(LanguageDescriptor)` | Registers a custom programming language with a Monarch tokenizer. |
 | `RegisterTheme(MonacoTheme)` | Registers a custom Monaco Editor theme. |
 | `MarkAsSaved()` | Resets the `IsModified` property to `false`. |
 | `Dispose()` | Releases WebView2 resources. |
