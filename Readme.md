@@ -334,7 +334,7 @@ The editor tracks unsaved changes. `IsModified` is a read-only dependency proper
 
 - [Monaco Editor](https://microsoft.github.io/monaco-editor/)
 - [Monarch Documentation](https://microsoft.github.io/monaco-editor/monarch.html)
-- [Monaco Playground – Custom Languages Example](https://microsoft.github.io/monaco-editor/playground.html?source=v0.55.1#example-extending-language-services-custom-languages)
+- [Monaco Playground – Custom Languages Example](https://microsoft.github.io/monaco-editor/playground.html?source=v0.55.1)
 <!-- feedback -->
 ## Does This Example Address Your Development Requirements/Objectives?
 
